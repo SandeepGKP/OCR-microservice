@@ -27,7 +27,7 @@ CBC: Hemoglobin 10.2 g/dL (Low), WBC 11,200 /uL (High)
 ```
 **Note:**
 
-* A generalized backend can be implemented using a third-party API to handle any valid medical laboratory test. However, the current implementation uses a local JSON file, so it is limited to the tests defined in that file.
+* A generalized backend can be implemented using standard medical vocabularies such as LOINC and SNOMED CT (via datasets or FHIR APIs), allowing support for any valid laboratory test. However, the current implementation is limited to the set of tests defined in the local JSON file.
 
 **Features:**
 
