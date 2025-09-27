@@ -145,6 +145,8 @@ Should return: "Server is working"
 http://localhost:5000
 ```
 
+**Note:** For users who want to test the API without setting up locally, a deployed version is available at `https://sandeepgkp-medical-report-simplifier.onrender.com`. Replace `http://localhost:5000` with this URL in the examples below. For local development, continue using `http://localhost:5000`.
+
 ### Endpoints
 
 #### POST /process
@@ -264,7 +266,7 @@ curl -X POST \
 ### Setting up the Request
 1. Open Postman and create a new request
 2. Set method to `POST`
-3. Enter URL: `http://localhost:5000/process`
+3. Enter URL: `http://localhost:5000/process` // for local machine
 4. In the Headers tab:
    - Key: `Content-Type`
    - Value: `multipart/form-data` (this will be auto-set when you add the file)
