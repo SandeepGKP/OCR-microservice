@@ -309,7 +309,7 @@ Response:
                      ▼
               ┌──────────────┐
               │ Normalization│
-              │ Fuse.js / DB │
+              │ Fuse.js      │
               └─────┬────────┘
                     │
                     ▼
