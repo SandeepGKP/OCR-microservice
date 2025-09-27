@@ -18,7 +18,7 @@ Key features:
 Medical Report Simplifier Backend
 ├── server.js                    # Express app entry point
 ├── routes/
-│   └── reports.js              # API routes (/process endpoint)
+│   └── reports.js              # API routes (/api/process-report endpoint)
 ├── controllers/
 │   └── reportController.js     # Main processing logic
 ├── utils/
@@ -30,7 +30,7 @@ Medical Report Simplifier Backend
 ```
 
 ### Architecture Flow:
-1. **File Upload**: Accepts multipart form data via `/process` endpoint
+1. **File Upload**: Accepts multipart form data via `/api/process-report` endpoint
 2. **OCR Processing**: If image file, extracts text using Tesseract.js
 3. **Text Extraction**: Uses regex to identify test patterns (name, value, unit)
 4. **Normalization**: Fuzzy matches test names against reference database, determines normal/abnormal status
@@ -161,14 +161,14 @@ http://localhost:5000
 **Note:** For users who want to test the API without setting up locally, a deployed version is available at:
 
 ```
-https://sandeepgkp-medical-report-simplifier.onrender.com
+https://sandeepgkp-medical-report-simplifier.onrender.com/api/process-report
 ```
 
-Replace `http://localhost:5000` with this URL in the examples below. For local development, continue using `http://localhost:5000`.
+Replace `http://localhost:5000` with this URL. For local development, continue using `http://localhost:5000/api/process-report`.
 
 ### Endpoints
 
-#### POST /process
+#### POST /api/process-report
 Process a medical report file (image or text) and return simplified results.
 
 **Request:**
@@ -260,7 +260,7 @@ Process a medical report file (image or text) and return simplified results.
 ### Setting up the Request
 1. Open Postman and create a new request
 2. Set method to `POST`
-3. Enter URL: `http://localhost:5000/process` // for local machine
+3. Enter URL: `http://localhost:5000/api/process-report` // for local machine
 4. In the Headers tab:
    - Key: `Content-Type`
    - Value: `multipart/form-data` (this will be auto-set when you add the file)
@@ -272,7 +272,7 @@ Process a medical report file (image or text) and return simplified results.
 
 #### Request 1: Process normal TSH and Lymphocytes results
 - **Method:** POST
-- **URL:** http://localhost:5000/process
+- **URL:** http://localhost:5000/api/process-report
 - **Body (form-data):**
   - Key: `file`, Type: `File`
   - Value: Text file with content:
@@ -314,7 +314,7 @@ Process a medical report file (image or text) and return simplified results.
 
 #### Request 2: Process with abnormal results (for testing error handling)
 - **Method:** POST
-- **URL:** http://localhost:5000/process
+- **URL:** http://localhost:5000/api/process-report
 - **Body (form-data):** Don't attach any file
 
 - **Expected Response:**

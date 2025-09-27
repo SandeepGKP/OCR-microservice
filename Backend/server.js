@@ -3,7 +3,7 @@ const app = express();
 const reportsRouter = require('./routes/reports');
 
 app.use(express.json());
-app.use('/', reportsRouter);
+app.use('/api', reportsRouter);
 
 app.get('/', (req, res) => res.send('Server is working'));
 
