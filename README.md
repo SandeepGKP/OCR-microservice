@@ -119,28 +119,6 @@ Lymphocytes 30 %
 - System applies OCR to extract text in the same format as text files above
 - Minimum OCR confidence threshold of 70% required
 
-### Raw JSON Input
-The API also accepts raw text input via JSON POST requests without requiring file uploads.
-
-**Request:**
-- Method: `POST`
-- Content-Type: `application/json`
-- Body: JSON object with text content
-
-**Parameters:**
-- `type`: Set to "text"
-- `content`: Raw text containing test results in format TestName Value Unit
-
-**Example Request:**
-```bash
-curl -X POST http://localhost:5000/process \
-  -H "Content-Type: application/json" \
-  -d '{
-    "type": "text",
-    "content": "CBC: Hemoglobin 10.2 g/dL (Low), WBC 11,200 /uL (High)"
-  }'
-```
-
 ## Running Instructions (Local Development)
 
 1. Start the development server:
@@ -188,7 +166,6 @@ curl -X POST \
 ```
 
 **Success Response (200):**
-
 ```json
 {
   "tests": [
