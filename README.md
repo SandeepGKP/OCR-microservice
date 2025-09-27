@@ -25,6 +25,9 @@ The **Medical Report Simplifier Backend** is a Node.js/Express application that 
 ```
 CBC: Hemoglobin 10.2 g/dL (Low), WBC 11,200 /uL (High)
 ```
+**Note:**
+
+* A generalized backend can be implemented using a third-party API to handle any valid medical laboratory test. However, the current implementation uses a local JSON file, so it is limited to the tests defined in that file.
 
 **Features:**
 
