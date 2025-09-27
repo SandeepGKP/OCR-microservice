@@ -173,12 +173,14 @@ npm start      # Production mode
 * Content-Type: multipart/form-data
 * Body: Form-data with file upload (text/image)
 
-**Sample Input JSON:**
+**Sample Input raw JSON:**
 
 ```json
 {
-  "tests_raw": ["Hemoglobin 13.5 g/dL", "RBC 5.1 million cells/uL"]
+  "type": "text",
+  "content": "CBC: Hemoglobin 10.2 g/dL (Low)"
 }
+
 ```
 
 **Success Response:**
