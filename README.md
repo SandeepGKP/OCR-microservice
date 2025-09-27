@@ -10,7 +10,7 @@
 6. [Environment Setup](#environment-setup)
 7. [Sample Input Formats](#sample-input-formats)
 8. [Data Input Formats](#data-input-formats)
-9. [Running Instructions](#running-instructions)
+9. [Running Instructions](#running-instructions-local-development)
 10. [API Documentation](#api-documentation)
 11. [File Upload Guidelines](#file-upload-guidelines)
 12. [Postman Testing](#postman-testing)
