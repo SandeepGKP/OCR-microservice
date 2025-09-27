@@ -325,6 +325,7 @@ Response:
               │ JSON Output  │
               │ (tests,      │
               │ summary,     │
-              │ explanations)│
+              │ explanations,|
+              | status)      │
               |--------------|
 ```
