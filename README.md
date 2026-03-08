@@ -3,39 +3,28 @@
 ## Table of Contents
 
 1. [Project Overview](#project-overview)
-2. [Architecture](#architecture)
-3. [Technologies Used](#technologies-used)
-4. [Prerequisites](#prerequisites)
-5. [Installation](#installation)
-6. [Environment Setup](#environment-setup)
-7. [Sample Input Formats](#sample-input-formats)
-8. [Data Input Formats](#data-input-formats)
-9. [Running Instructions](#running-instructions-local-development)
-10. [API Documentation](#api-documentation)
-11. [File Upload Guidelines](#file-upload-guidelines)
-12. [Postman Testing](#postman-testing)
-13. [Backend Flow Diagram](#backend-flow-diagram)
+2. [Technologies Used](#technologies-used)
+3. [Prerequisites](#prerequisites)
+4. [Installation](#installation)
+5. [Environment Setup](#environment-setup)
+6. [Running Instructions](#running-instructions-local-development)
+7. [API Documentation](#api-documentation)
+8. [File Upload Guidelines](#file-upload-guidelines)
+9. [Postman Testing](#postman-testing)
 
 ---
 
 ## Project Overview
 
-The **Medical Report Simplifier Backend** is a Node.js/Express application that processes medical test reports such as:
+The **OCR microservice** is a Node.js/Express application that extract text such as:
 
-```
-CBC: Hemoglobin 10.2 g/dL (Low), WBC 11,200 /uL (High)
-```
+
 **Note:**
-
-* A generalized backend can be implemented using standard medical vocabularies such as LOINC and SNOMED CT (via datasets or FHIR APIs), allowing support for any valid laboratory test. However, the current implementation is limited to the set of tests defined in the local JSON file.
 
 **Features:**
 
-* Accepts **image uploads** (JPG, PNG) and **direct text input**
+* Accepts **image uploads** (JPG, PNG,JPEG).
 * Performs **OCR** using Tesseract.js for text extraction from images
-* Fuzzy matches **test names** for normalization
-* Interprets results against **standard reference ranges**
-* Generates **patient-friendly summaries** for abnormal results
 * Provides a **RESTful API** with multipart file upload support
 
 ---
@@ -51,20 +40,13 @@ Medical Report Simplifier Backend
 │   └── reportController.js      # Processing logic
 ├── utils/
 │   ├── ocr.js                   # OCR extraction
-│   ├── normalize.js             # Test normalization
-│   └── summary.js               # Summary generation
-└── data/
-    └── referenceTests.json      # Standard test reference ranges
+
 ```
 
 **Flow:**
 
 1. File/Text upload → `/api/process-report`
 2. OCR processing (if image)
-3. Regex-based test extraction
-4. Fuzzy normalization & status evaluation
-5. Patient-friendly summary generation
-6. JSON response with tests, summary, explanations, and status
 
 ---
 
@@ -72,7 +54,6 @@ Medical Report Simplifier Backend
 
 * **Express.js** – Web framework for APIs
 * **Tesseract.js** – OCR for image processing
-* **Fuse.js** – Fuzzy search for test name matching
 * **Multer** – File upload handling
 
 ---
@@ -88,7 +69,7 @@ Medical Report Simplifier Backend
 
 ```bash
 git clone https://github.com/SandeepGKP/SandeepGKP-Medical-Report-Simplifier-backend.git
-cd medical-report-simplifier-backend
+cd backend
 npm install
 ```
 
@@ -101,51 +82,16 @@ npm install
 Dependencies installed via `npm install` include:
 `express`, `multer`, `tesseract.js`, `fuse.js`
 
-**Reference Data:**
-
-* `data/referenceTests.json` contains supported medical tests, units, reference ranges, and explanations.
-
----
-
 ## Sample Input Formats
 
 ### 1. File Upload
 
-Upload a text or image file containing tests. Example text file:
+Upload a image file 
 
-```
-Hemoglobin 13.5 g/dL
-Glucose 95 mg/dL
-```
-
-### 2. Raw JSON Input
-
-```json
-{
-  "type": "text",
-  "content": "CBC: Hemoglobin 10.2 g/dL (Low), WBC 11,200 /uL (High)"
-}
-```
-
----
-
-## Data Input Formats
-
-### Text File Input
-
-* Format: `TestName Value Unit` (one test per line)
-* Examples:
-
-```
-Hemoglobin 13.5 g/dL
-Glucose 95 mg/dL
-TSH 2.5 mIU/L
-Lymphocytes 30 %
-```
 
 ### Image File Input
 
-* Supported formats: JPG, PNG, BMP
+* Supported formats: JPG, PNG, JPEG
 * Clear, straight, well-lit images recommended
 * OCR confidence must be ≥ 70%
 
@@ -173,40 +119,14 @@ npm start      # Production mode
 
 * Method: POST
 * Content-Type: multipart/form-data
-* Body: Form-data with file upload (text/image)
+* Body: Form-data with file upload (image)
 
-**Sample Input raw JSON:**
-
-```json
-{
-  "type": "text",
-  "content": " Hemoglobin 10.2 g/dL (Low), WBC 11,200 /uL (High)"
-}
-
-```
 
 **Success Response:**
 
 ```json
 {
-  "tests": [
-    {
-      "name": "Hemoglobin",
-      "value": 13.5,
-      "unit": "g/dL",
-      "status": "normal",
-      "ref_range": {"low": 12.0,"high": 15.0}
-    },
-    {
-      "name": "Glucose",
-      "value": 95,
-      "unit": "mg/dL",
-      "status": "normal",
-      "ref_range": {"low": 70,"high": 100}
-    }
-  ],
-  "summary": "All test values are normal.",
-  "explanations": [],
+  "res":"text"
   "status": "ok"
 }
 ```
@@ -217,12 +137,6 @@ npm start      # Production mode
 
 ```json
 {"status":"error","message":"No file uploaded"}
-```
-
-* Unprocessed / Hallucinated test:
-
-```json
-{"status":"unprocessed","reason":"hallucinated tests not present in input"}
 ```
 
 * Low OCR confidence:
@@ -252,82 +166,7 @@ npm start      # Production mode
 Steps:
 
 1. Open Postman → New Request → POST
-2. URL: `http://localhost:5000/api/process-report`
+2. URL: `http://localhost:5000/api/ocr`
 3. Headers → Content-Type: multipart/form-data
 4. Body → form-data → Key: file → select your file
 
-**Example 1 – Normal Test Values**
-Text file contents:
-
-```
-TSH 2.5 mIU/L
-Lymphocytes 30 %
-```
-
-Response:
-
-```json
-{
-  "tests":[
-    {"name":"TSH","value":2.5,"unit":"mIU/L","status":"normal","ref_range":{"low":0.4,"high":4.0}},
-    {"name":"Lymphocytes","value":30,"unit":"%","status":"normal","ref_range":{"low":20,"high":40}}
-  ],
-  "summary":"All test values are normal.",
-  "explanations":[],
-  "status":"ok"
-}
-```
-
-**Example 2 – No File Uploaded**
-Response:
-
-```json
-{"status":"error","message":"No file uploaded"}
-```
-
----
-
-## Backend Flow Diagram
-
-```
-                 ┌──────────────┐
-                 │  User Input  │
-                 │ Text / Image │
-                 └─────┬────────┘
-                       │
-                       ▼
-               ┌──────────────┐
-               │  /api/process│
-               │   -report    │
-               └─────--|──────|
-                       │
-        ┌──────────────┴───────────────┐
-        │                              │
-        ▼                              ▼
-┌──────────────┐                 ┌──────────────┐
-│ OCR Module   │                 │ Text Parsing │
-│ (Tesseract)  │                 │ Regex/Logic  │
-└─────┬────────┘                 └─────┬────────┘
-      │                                │
-      └──────────────┬──────────────────┘
-                     ▼
-              ┌──────────────┐
-              │ Normalization│
-              │ Fuse.js      │
-              └─────┬────────┘
-                    │
-                    ▼
-              ┌──────────────┐
-              │ Summary /    │
-              │ Explanation  │
-              └─────┬────────┘
-                    │
-                    ▼
-              ┌──────────────┐
-              │ JSON Output  │
-              │ (tests,      │
-              │ summary,     │
-              │ explanations,|
-              | status)      │
-              |--------------|
-```
