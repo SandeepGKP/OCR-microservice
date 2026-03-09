@@ -1,4 +1,4 @@
-# Medical Report Simplifier Backend
+# OCR microservice
 
 ## Table of Contents
 
